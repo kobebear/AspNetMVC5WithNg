@@ -2,30 +2,56 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<h2>Create Customer</h2>
+
+<div id="content" ng-controller="CustomerController">
+    <span ng-show="isViewLoading" class="viewLoading">
+        <img src="~/Content/images/ng-loader.gif" /> loading...
+    </span>
+    <div ng-class="result">{{message}}</div>
+    <hr />
+    <form name="frmCustomer" novalidate>
+        <div>
+            <input type="hidden" ng-model="custModel.Id" name="cid" />
+        </div>
+        <div>
+            <label for="email">Customer Name</label>
+            <input type="text" ng-model="custModel.CustName" name="cname" placeholder="" required ng-minlength="4" ng-maxlength="14" />
+            <span class="error" ng-show="(frmCustomer.$dirty||submitted) && frmCustomer.cname.$error.required">Customer name is Required</span>
+            <span class="error" ng-show="frmCustomer.$dirty && frmCustomer.cname.$error.minlength">Minimum length required is 5</span>
+            <span class="error" ng-show="frmCustomer.$dirty && frmCustomer.cname.$error.maxlength">Minimum length required is 15</span>
+        </div>
+        <div>
+            <label for="email">E-mail address</label>
+            <input type="email" ng-model="custModel.CustEmail" name="email" placeholder="" required />
+            <span class="error" ng-show="(frmCustomer.$dirty ||submitted) && frmCustomer.email.$error.required">EmailId is Required!</span>
+            <span class="error" ng-show="(frmCustomer.$dirty ||submitted) && frmCustomer.$error.email">Invalid EmailId!</span>
+        </div>
+        <div class="btn">
+            <input type="submit" value="Save" ng-click="saveCustomer()" ng-disabled="frmCustomer.$invalid">
+            <input type="submit" value="Update" ng-click="updateCustomer()" ng-disabled="frmCustomer.$invalid">
+        </div>
+    </form>
+    <hr />
+
+    <h2>All Customers</h2>
+    <table class="table table-striped">
+        <tr ng-repeat="custModel in ListCustomer">
+            <td>{{custModel.Id}}</td>
+            <td>{{custModel.CustName}}</td>
+            <td>{{custModel.CustEmail}}</td>
+            <td>
+                <a href="#" ng-click="getCustomer(custModel)" title="Edit Record">
+                    <img src="~/Content/images/edit.png" />
+                </a><a href="#" ng-click="deleteCustomer(custModel)" title="Delete Record">
+                    <img src="~/Content/images/erase.png" />
+                </a>
+            </td>
+        </tr>
+    </table>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+@section scripts{<!--这里脚本节的名字，必须和_Layout.cshtml中最后的@RenderSection中的节名称匹配-->
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/ScriptsNg/CustomerController.js"></script>
+}

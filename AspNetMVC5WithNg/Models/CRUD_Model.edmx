@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CRUD_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="CustName" Type="varchar" MaxLength="100" />
+          <Property Name="CustEmail" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <Function Name="Delete_Customer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Get_Customer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Count" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Get_CustomerbyID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Set_Customer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustName" Type="nvarchar" Mode="In" />
+          <Parameter Name="CustEmail" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Update_Customer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="bigint" Mode="In" />
+          <Parameter Name="CustName" Type="nvarchar" Mode="In" />
+          <Parameter Name="CustEmail" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CRUD_ModelStoreContainer">
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CRUD_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="CustName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CustEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="CRUD_SampleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <FunctionImport Name="Delete_Customer" ReturnType="Collection(Int32)">
+            <Parameter Name="Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Get_Customer" ReturnType="Collection(CRUD_Model.Get_Customer_Result)">
+            <Parameter Name="Count" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Get_CustomerbyID" ReturnType="Collection(CRUD_Model.Get_CustomerbyID_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Set_Customer" ReturnType="Collection(Int32)">
+            <Parameter Name="CustName" Mode="In" Type="String" />
+            <Parameter Name="CustEmail" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Update_Customer" ReturnType="Collection(Int32)">
+            <Parameter Name="Id" Mode="In" Type="Int64" />
+            <Parameter Name="CustName" Mode="In" Type="String" />
+            <Parameter Name="CustEmail" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Get_Customer_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="CustName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CustEmail" Nullable="true" MaxLength="150" />
+        </ComplexType>
+        <ComplexType Name="Get_CustomerbyID_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="CustName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CustEmail" Nullable="true" MaxLength="150" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CRUD_ModelStoreContainer" CdmEntityContainer="CRUD_SampleEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CRUD_Model.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustName" ColumnName="CustName" />
+                <ScalarProperty Name="CustEmail" ColumnName="CustEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Delete_Customer" FunctionName="CRUD_Model.Store.Delete_Customer" />
+          <FunctionImportMapping FunctionImportName="Get_Customer" FunctionName="CRUD_Model.Store.Get_Customer">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CRUD_Model.Get_Customer_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustName" ColumnName="CustName" />
+                <ScalarProperty Name="CustEmail" ColumnName="CustEmail" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Get_CustomerbyID" FunctionName="CRUD_Model.Store.Get_CustomerbyID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CRUD_Model.Get_CustomerbyID_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustName" ColumnName="CustName" />
+                <ScalarProperty Name="CustEmail" ColumnName="CustEmail" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Set_Customer" FunctionName="CRUD_Model.Store.Set_Customer" />
+          <FunctionImportMapping FunctionImportName="Update_Customer" FunctionName="CRUD_Model.Store.Update_Customer" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
